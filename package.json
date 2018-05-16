@@ -1,0 +1,29 @@
+{
+  "name": "http-errors-promise",
+  "version": "1.0.0",
+  "description": "Server side error handling service, best suited for promise chains, uses 'http-errors'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irtazabbas/http-errors-promise.git"
+  },
+  "keywords": [
+    "error-handling",
+    "server-side-error",
+    "error-promise",
+    "http-errors"
+  ],
+  "author": "Irtaza Abbas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irtazabbas/http-errors-promise/issues"
+  },
+  "homepage": "https://github.com/irtazabbas/http-errors-promise#readme",
+  "dependencies": {
+    "http-errors": "1.6.2",
+    "bluebird": "^3.5.1"
+  }
+}
