@@ -1,6 +1,8 @@
 const Promise = require('bluebird');
 const httpError = require('http-errors');
 
+const COMMON = require('./common');
+
 // Constructor reference
 const HttpError = httpError.HttpError;
 
@@ -37,6 +39,14 @@ error.make = function(err, status = 500) {
 
 error.isMade = function(err) {
   return err instanceof HttpError && typeof err.message === 'string';
+};
+
+
+error.makeCommonErrors = function(modelName) {
+  return Object.keys(COMMON).reduce(
+    (errors, key) => (errors[key] = COMMON[key](modelName)) && errors,
+    {}
+  );
 };
 
 
