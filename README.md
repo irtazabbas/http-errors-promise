@@ -2,7 +2,7 @@
 Server side error handling service, best suited for promise chains, uses `http-errors`.
 
 ## Basic Usage
-```(javascript)
+```js
   const error = require('http-errors-promise');
   
   router.get('/', function(req, res, next) {
@@ -18,7 +18,7 @@ Server side error handling service, best suited for promise chains, uses `http-e
   });
 ```
 ## Shining Use-case
-```(javascript)
+```js
 function doSomething() {
   // returns a promise
   return new Promise((resolve, reject) => {
