@@ -70,6 +70,7 @@ and sends the response with the error instead of returning
 
 ### *makeCommonErrors(modelName)*
 - creates and returns commonly seen errors by using a dynamically set `modelName` in the error message, also using `http-errors`
+- the common errors are defined in `common.js` (you're welcome to add new errors there)
 
 <br><br>
 Design inspired by [ralusek's](https://github.com/ralusek) work on error handling
