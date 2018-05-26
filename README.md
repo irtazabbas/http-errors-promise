@@ -47,11 +47,10 @@ function doSomethingElse() {
 function mainFunction() {
   doSomethingElse()
     .catch(err => {
-      // here 'err' could either be from 'doSomething'
-      // or 'doSomethingElse' based on what got
-      // wrong and where the error actually origined
-      // from, more technically the error properly
-      // bubbles up
+      // here 'err' could either be from 'doSomething' or
+      // 'doSomethingElse' based on what went wrong and where
+      // the error actually originated from, more technically the
+      // error properly bubbles up
     })
 }
 ```
