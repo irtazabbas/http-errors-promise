@@ -6,9 +6,17 @@ const COMMON = require('./common');
 // Constructor reference
 const HttpError = httpError.HttpError;
 
-
 function error(err, secErr, status = 500, dontReject) {
   if (!error.isMade(err)) {
+    switch(config.log.level) {
+      case(0):
+        break;
+      case(1):
+        console.error(extractError(err));
+        break;
+      default:
+        console.error(err);
+    }
     err = error.make(secErr, status);
   }
   if (!dontReject) return Promise.reject(err);
@@ -47,6 +55,39 @@ error.makeCommonErrors = function(modelName) {
     (errors, key) => (errors[key] = COMMON[key](modelName)) && errors,
     {}
   );
+};
+
+error.config = function(params) {
+  config = Object.assign(config, params);
+};
+
+const extractError = function(obj) {
+  return (config.log.keys || []).reduce((prev, cur) => {
+    if (
+      typeof cur === 'object' &&
+      typeof cur.key === 'string' &&
+      typeof cur.extractor === 'function' &&
+      obj[cur.key]
+    ) {
+      prev[cur.key] = cur.extractor(obj[cur.key]);
+    } else if (obj[cur]) {
+      prev[cur] = obj[cur];
+    }
+    return prev;
+  }, {});
+};
+
+const config = {
+  log: {
+    level: 2,
+    keys: [
+      'name',
+      'message',
+      'fields',
+      { key: 'original', extractor: extractError },
+      { key: 'parent', extractor: extractError }
+    ]
+  }
 };
 
 
