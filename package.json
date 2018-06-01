@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/irtazabbas/http-errors-promise#readme",
   "dependencies": {
-    "http-errors": "1.6.2",
-    "bluebird": "^3.5.1"
+    "http-errors": "1.6.2"
   }
 }

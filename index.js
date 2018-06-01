@@ -1,4 +1,3 @@
-const Promise = require('bluebird');
 const httpError = require('http-errors');
 
 const COMMON = require('./common');
