@@ -7,7 +7,7 @@ const HttpError = httpError.HttpError;
 
 function error(err, secErr, status = 500, dontReject) {
   if (!error.isMade(err)) {
-    switch(config.log.level) {
+    switch(config.logLevel) {
       case(0):
         break;
       case(1):
@@ -57,11 +57,13 @@ error.makeCommonErrors = function(modelName) {
 };
 
 error.config = function(params) {
+  let keys = config.logKeys;
   config = Object.assign(config, params);
+  params.keys && (config.logKeys.concat(keys));
 };
 
 const extractError = function(obj) {
-  return (config.log.keys || []).reduce((prev, cur) => {
+  return (config.logKeys || []).reduce((prev, cur) => {
     if (
       typeof cur === 'object' &&
       typeof cur.key === 'string' &&
@@ -77,16 +79,14 @@ const extractError = function(obj) {
 };
 
 let config = {
-  log: {
-    level: 2,
-    keys: [
+  logLevel: 2,
+  logKeys: [
       'name',
       'message',
       'fields',
       { key: 'original', extractor: extractError },
       { key: 'parent', extractor: extractError }
     ]
-  }
 };
 
 
