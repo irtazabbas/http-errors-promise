@@ -76,7 +76,7 @@ const extractError = function(obj) {
   }, {});
 };
 
-const config = {
+let config = {
   log: {
     level: 2,
     keys: [
