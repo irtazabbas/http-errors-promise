@@ -7,14 +7,16 @@ const HttpError = httpError.HttpError;
 
 function error(err, secErr, status = 500, dontReject) {
   if (!error.isMade(err)) {
-    switch(config.logLevel) {
-      case(0):
-        break;
-      case(1):
-        console.error(extractError(err));
-        break;
-      default:
-        console.error(err);
+    if (err) {
+      switch(config.logLevel) {
+        case(0):
+          break;
+        case(1):
+          console.error(extractError(err));
+          break;
+        default:
+          console.error(err);
+      }
     }
     err = error.make(secErr, status);
   }
@@ -62,20 +64,25 @@ error.config = function(params) {
   params.keys && (config.logKeys.concat(keys));
 };
 
-const extractError = function(obj) {
-  return (config.logKeys || []).reduce((prev, cur) => {
-    if (
-      typeof cur === 'object' &&
-      typeof cur.key === 'string' &&
-      typeof cur.extractor === 'function' &&
-      obj[cur.key]
-    ) {
-      prev[cur.key] = cur.extractor(obj[cur.key]);
-    } else if (obj[cur]) {
-      prev[cur] = obj[cur];
-    }
-    return prev;
-  }, {});
+const extractError = function(error) {
+  if (typeof error === 'object') {
+    let obj = error;
+    return (config.logKeys || []).reduce((prev, cur) => {
+      if (
+        typeof cur === 'object' &&
+        typeof cur.key === 'string' &&
+        typeof cur.extractor === 'function' &&
+        obj[cur.key]
+      ) {
+        prev[cur.key] = cur.extractor(obj[cur.key]);
+      } else if (obj[cur]) {
+        prev[cur] = obj[cur];
+      }
+      return prev;
+    }, {});
+  } else {
+    return error
+  }
 };
 
 let config = {
