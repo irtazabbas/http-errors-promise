@@ -96,5 +96,6 @@ let config = {
     ]
 };
 
+error.httpError = httpError;
 
 module.exports = error;
