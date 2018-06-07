@@ -6,14 +6,14 @@ const COMMON = require('./common');
 const HttpError = httpError.HttpError;
 
 function error(err, secErr, status = 500, dontReject) {
-  err = checkAndMake(err, secErr);
+  err = checkAndMake(err, secErr, status);
 
   if (!dontReject) return Promise.reject(err);
   return err;
 }
 
 error.respond = function (res, err, secErr, status = 500) {
-  err = checkAndMake(err, secErr);
+  err = checkAndMake(err, secErr, status);
 
   res.status(err.status).json(err);
   return this.call(this, err, undefined, status, true);
@@ -50,7 +50,7 @@ error.config = function(params) {
   params.keys && (config.logKeys.concat(keys));
 };
 
-const checkAndMake = function(err, secErr) {
+const checkAndMake = function(err, secErr, status = 500) {
   if (!error.isMade(err)) {
     if (err) {
       switch(config.logLevel) {
