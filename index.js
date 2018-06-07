@@ -6,28 +6,14 @@ const COMMON = require('./common');
 const HttpError = httpError.HttpError;
 
 function error(err, secErr, status = 500, dontReject) {
-  if (!error.isMade(err)) {
-    if (err) {
-      switch(config.logLevel) {
-        case(0):
-          break;
-        case(1):
-          console.error(extractError(err));
-          break;
-        default:
-          console.error(err);
-      }
-    }
-    err = error.make(secErr, status);
-  }
+  err = checkAndMake(err, secErr);
+
   if (!dontReject) return Promise.reject(err);
   return err;
 }
 
 error.respond = function (res, err, secErr, status = 500) {
-  if (!this.isMade(err)) {
-    err = this.make(secErr, status);
-  }
+  err = checkAndMake(err, secErr);
 
   res.status(err.status).json(err);
   return this.call(this, err, undefined, status, true);
@@ -62,6 +48,25 @@ error.config = function(params) {
   let keys = config.logKeys;
   config = Object.assign(config, params);
   params.keys && (config.logKeys.concat(keys));
+};
+
+const checkAndMake = function(err, secErr) {
+  if (!error.isMade(err)) {
+    if (err) {
+      switch(config.logLevel) {
+        case(0):
+          break;
+        case(1):
+          console.error(extractError(err));
+          break;
+        default:
+          console.error(err);
+      }
+    }
+    return error.make(secErr, status);
+  } else {
+    return err;
+  }
 };
 
 const extractError = function(error) {
